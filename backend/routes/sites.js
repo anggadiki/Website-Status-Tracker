@@ -38,4 +38,20 @@ router.get("/:id/logs", async (req, res) => {
   res.json(data);
 });
 
+router.get("/:id/logs/chart", async (req, res) => {
+  const { id } = req.params;
+
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(); // 24 jam terakhir
+
+  const { data, error } = await supabase
+    .from("monitoring_logs")
+    .select("response_time, checked_at")
+    .eq("site_id", id)
+    .gte("checked_at", since)
+    .order("checked_at", { ascending: true });
+
+  if (error) return res.status(500).json(error);
+  res.json(data);
+});
+
 module.exports = router;
