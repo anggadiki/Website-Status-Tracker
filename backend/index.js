@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const sitesRouter = require("./routes/sites");
 require("./pingWorker"); // scheduler jalan otomatis
 
@@ -7,6 +8,11 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use("/api/sites", sitesRouter);
 

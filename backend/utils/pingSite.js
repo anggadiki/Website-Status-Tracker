@@ -1,13 +1,29 @@
-const axios = require("axios");
+// utils/pingSite.js
+const https = require("https");
 
 async function pingSite(url) {
+  const start = Date.now();
+
   try {
-    const start = Date.now();
-    await axios.get(url, { timeout: 5000 });
-    const responseTime = Date.now() - start;
-    return { status: "UP", responseTime };
+    await new Promise((resolve, reject) => {
+      https
+        .get(url, (res) => {
+          res.on("data", () => {}); // minimal baca data
+          res.on("end", resolve);
+        })
+        .on("error", reject)
+        .setTimeout(5000, () => reject(new Error("Timeout")));
+    });
+
+    return {
+      status: "UP",
+      responseTime: Date.now() - start,
+    };
   } catch (err) {
-    return { status: "DOWN", responseTime: null };
+    return {
+      status: "DOWN",
+      responseTime: null,
+    };
   }
 }
 
