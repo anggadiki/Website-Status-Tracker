@@ -9,13 +9,16 @@ async function runPinger() {
 
   for (const site of sites) {
     const result = await pingSite(site.url);
-    await supabase.from("monitoring_logs").insert([
+    await supabase.from("monitoring_logs").upsert(
       {
         site_id: site.id,
         status: result.status,
         response_time: result.responseTime,
+        checked_at: new Date().toISOString(),
       },
-    ]);
+      { onConflict: ["site_id"] }
+    );
+
     console.log(`[${new Date().toISOString()}] ${site.url} → ${result.status}`);
   }
 }

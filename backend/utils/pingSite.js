@@ -8,7 +8,7 @@ async function pingSite(url) {
     await new Promise((resolve, reject) => {
       https
         .get(url, (res) => {
-          res.on("data", () => {}); // minimal baca data
+          res.on("data", () => {});
           res.on("end", resolve);
         })
         .on("error", reject)
