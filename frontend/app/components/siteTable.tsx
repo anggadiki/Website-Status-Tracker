@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SiteChart from "./siteChart";
 
 export default function SiteTable({ sites }: { sites: any[] }) {
   const [logs, setLogs] = useState<{ [key: string]: any }>({});
@@ -10,27 +11,18 @@ export default function SiteTable({ sites }: { sites: any[] }) {
       const result: { [key: string]: any } = {};
 
       for (const site of sites) {
-        if (!site?.id) {
-          console.warn("Site ID is missing or invalid:", site);
-          continue;
-        }
+        if (!site?.id) continue;
 
         try {
           const res = await fetch(
             `http://localhost:3001/api/sites/${site.id}/logs`
           );
-
-          if (!res.ok) {
-            console.warn(
-              `Failed to fetch logs for ${site.name}: ${res.status}`
-            );
-            continue;
-          }
+          if (!res.ok) continue;
 
           const data = await res.json();
           result[site.id] = data[0];
-        } catch (error) {
-          console.error(`Error fetching logs for ${site.name}:`, error);
+        } catch (err) {
+          console.error("Fetch log error:", err);
         }
       }
 
@@ -41,40 +33,46 @@ export default function SiteTable({ sites }: { sites: any[] }) {
   }, [sites]);
 
   return (
-    <table className="w-full border text-sm">
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="p-2 text-left">Nama</th>
-          <th className="p-2 text-left">URL</th>
-          <th className="p-2 text-left">Status</th>
-          <th className="p-2 text-left">Response (ms)</th>
-          <th className="p-2 text-left">Last Checked</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sites.map((site) => {
-          const log = logs[site.id];
-          return (
-            <tr key={site.id} className="border-t">
-              <td className="p-2">{site.name}</td>
-              <td className="p-2">{site.url}</td>
-              <td
-                className={`p-2 font-bold ${
-                  log?.status === "UP" ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {log?.status || "-"}
-              </td>
-              <td className="p-2">{log?.response_time ?? "-"}</td>
-              <td className="p-2">
-                {log?.checked_at
-                  ? new Date(log.checked_at).toLocaleString()
-                  : "-"}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="space-y-6">
+      {sites.map((site) => {
+        const log = logs[site.id];
+        return (
+          <div
+            key={site.id}
+            className="border rounded-2xl shadow p-4 bg-white hover:shadow-md transition"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+              <div className="space-y-1">
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {site.name}
+                </h2>
+                <p className="text-sm text-gray-500">{site.url}</p>
+              </div>
+              <div className="mt-2 sm:mt-0 space-y-1 sm:space-y-0 sm:space-x-6 flex flex-col sm:flex-row text-sm">
+                <span
+                  className={`font-bold ${
+                    log?.status === "UP" ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  Status: {log?.status || "-"}
+                </span>
+                <span>Response: {log?.response_time ?? "-"} ms</span>
+                <span>
+                  Last Checked:{" "}
+                  {log?.checked_at
+                    ? new Date(log.checked_at).toLocaleString()
+                    : "-"}
+                </span>
+              </div>
+            </div>
+
+            {/* Chart */}
+            <div className="h-48 mb-8">
+              <SiteChart siteId={site.id} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }

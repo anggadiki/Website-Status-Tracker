@@ -32,23 +32,23 @@ export default function HomePage() {
 
   return (
     <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">📡 Monitoring Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-4">🔹 Uptime & Response Monitor</h1>
       <div className="flex flex-col sm:flex-row gap-2 mb-4">
         <input
-          className="border p-2 flex-1"
+          className="border p-2 flex-1 rounded-xl"
           placeholder="https://example.com"
           value={form.url}
           onChange={(e) => setForm({ ...form, url: e.target.value })}
         />
         <input
-          className="border p-2 flex-1"
+          className="border p-2 flex-1 rounded-xl"
           placeholder="Nama Website"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-4 py-2"
+          className=" bg-green-600 rounded-xl hover:bg-green-700 text-white px-4 py-2"
         >
           Tambah
         </button>
