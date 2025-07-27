@@ -31,7 +31,7 @@ export default function SiteChart({ siteId }: { siteId: string }) {
   const fetchChart = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/sites/${siteId}/logs/chart`
+        `https://website-status-tracker-production.up.railway.app/api/sites/${siteId}/logs/chart`
       );
       if (!res.ok) throw new Error("Failed to fetch chart");
 

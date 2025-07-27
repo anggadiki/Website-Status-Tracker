@@ -13,11 +13,14 @@ export default function HomePage() {
   const [form, setForm] = useState({ url: "", name: "" });
 
   const handleAdd = async () => {
-    await fetch("http://localhost:3001/api/sites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    await fetch(
+      "https://website-status-tracker-production.up.railway.app/api/sites",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      }
+    );
     setForm({ url: "", name: "" });
     dispatch(fetchSites());
   };

@@ -15,7 +15,7 @@ export default function SiteTable({ sites }: { sites: any[] }) {
 
         try {
           const res = await fetch(
-            `http://localhost:3001/api/sites/${site.id}/logs`
+            `https://website-status-tracker-production.up.railway.app/api/sites/${site.id}/logs`
           );
           if (!res.ok) continue;
 

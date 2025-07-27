@@ -17,7 +17,9 @@ const initialState: SiteState = {
 };
 
 export const fetchSites = createAsyncThunk("site/fetchSites", async () => {
-  const res = await fetch("http://localhost:3001/api/sites");
+  const res = await fetch(
+    "https://website-status-tracker-production.up.railway.app/api/sites"
+  );
   return await res.json();
 });
 
