@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "website-status-tracker": {
+      "rootDirectory": "frontend"
+    }
+  }
+}
