@@ -1,4 +1,4 @@
-# 🌐 Website Monitoring Dashboard
+# 🌐 Website Status Tracker
 
 Sebuah aplikasi monitoring website berbasis web untuk memantau status `UP/DOWN`, response time, dan waktu pengecekan terakhir.  
 Data disimpan menggunakan Supabase, dan sistem ping berjalan otomatis setiap menit.
