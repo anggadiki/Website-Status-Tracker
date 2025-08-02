@@ -8,20 +8,20 @@ const startCronJobs = () => {
     console.log("⏳ [CRON] Mulai hapus data dari dua tabel...");
 
     try {
-      // Hapus isi monitoring_logs terlebih dahulu (agar tidak melanggar foreign key jika ada)
+      // Hapus isi monitoring_logs terlebih dahulu
       const { error: logError } = await supabase
         .from("monitoring_logs")
         .delete()
-        .neq("id", "");
+        .not("id", "is", null);
 
       if (logError)
         throw new Error("Gagal hapus monitoring_logs: " + logError.message);
 
-      // Kemudian hapus isi monitored_sites
+      // Hapus isi monitored_sites
       const { error: siteError } = await supabase
         .from("monitored_sites")
         .delete()
-        .neq("id", "");
+        .not("id", "is", null);
 
       if (siteError)
         throw new Error("Gagal hapus monitored_sites: " + siteError.message);
