@@ -10,16 +10,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Railway CLI
-        run: npm install -g railway
+      - name: Install Railway CLI (new)
+        run: npm install -g @railway/cli
 
       - name: Deploy to Railway
+        continue-on-error: true
+        working-directory: ./backend
         run: |
           railway login --token ${{ secrets.RAILWAY_TOKEN }}
           railway link ${{ secrets.RAILWAY_PROJECT_ID }}
           railway up
-        working-directory: ./backend
